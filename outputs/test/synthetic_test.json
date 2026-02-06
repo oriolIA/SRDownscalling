@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-06T08:48:39.503546",
+  "tests": {
+    "dependencies": {
+      "numpy": "2.4.2",
+      "xarray": "2026.1.0",
+      "netcdf4": "1.7.4",
+      "pyyaml": "6.0.3"
+    },
+    "data": {
+      "exists": true,
+      "domains": {
+        "d01": 366,
+        "d02": 366,
+        "d05": 366
+      },
+      "total_files": 1098
+    },
+    "model": {
+      "config": {
+        "in_channels": 7,
+        "num_rrdb": 4,
+        "nf": 32,
+        "gc": 16,
+        "scale": 2
+      },
+      "estimated_params": 580000,
+      "architecture": "RRDB + ChannelAttention + PixelShuffle upsampling"
+    }
+  },
+  "status": "ready"
+}

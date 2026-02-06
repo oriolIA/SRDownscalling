@@ -1,0 +1,29 @@
+[08:48:39] ============================================================
+[08:48:39] SRDownscalling - Synthetic Test
+[08:48:39] ============================================================
+[08:48:39] 
+[1/4] Checking dependencies...
+[08:48:39]   ✓ numpy: 2.4.2
+[08:48:39]   ✓ xarray: 2026.1.0
+[08:48:39]   ✓ netcdf4: 1.7.4
+[08:48:39]   ✓ pyyaml: 6.0.3
+[08:48:39] 
+[2/4] Checking WRF data...
+[08:48:39] Checking data: /home/oriol/data/WRF/1469893
+[08:48:39]   ✓ Data: {'exists': True, 'domains': {'d01': 366, 'd02': 366, 'd05': 366}, 'total_files': 1098}
+[08:48:39] 
+[3/4] Testing model structure...
+[08:48:39] Testing model structure...
+[08:48:39]   ✓ Architecture: RRDB + ChannelAttention + PixelShuffle upsampling
+[08:48:39]   ✓ Parameters: 580,000
+[08:48:39] 
+[4/4] Summary...
+[08:48:39] 
+============================================================
+[08:48:39] RESULT
+[08:48:39] ============================================================
+[08:48:39]   Dependencies: ✓ OK
+[08:48:39]   Data: ✓ OK
+[08:48:39]   Status: ready
+[08:48:39] 
+Results saved to: outputs/test/synthetic_test.json
