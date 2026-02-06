@@ -42,12 +42,11 @@ class Generator(nn.Module):
         # Reconstruction
         self.conv_trunk = nn.Conv2d(nf, nf, 3, 1, 1)
         
-        # Upsampling
-        self.upconv1 = self._upconv(nf, nf)
-        self.upconv2 = self._upconv(nf, nf if scale > 2 else 3)
+        # Upsampling - només un bloc per scale=2
+        self.upconv = self._upconv(nf, nf)
         
         self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
-        self.final_activation = nn.Tanh()
+        self.final = nn.Conv2d(nf, in_channels, kernel_size=1)
         
         self._init_weights()
     
@@ -81,15 +80,11 @@ class Generator(nn.Module):
         feat = self.conv_trunk(feat)
         feat = feat + feat  # residual connection
         
-        # Upsampling
-        if self.scale > 1:
-            feat = self.upconv1(feat)
-        if self.scale > 2:
-            feat = self.upconv2(feat)
-        else:
-            feat = self.upconv2[:-1](feat)  # Skip activation for last layer
+        # Upsampling (scale=2)
+        feat = self.upconv(feat)
         
-        out = self.final_activation(feat)
+        # Output layer
+        out = self.final(feat)
         return out
 
 
