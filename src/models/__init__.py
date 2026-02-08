@@ -1,4 +1,9 @@
-from .srgan import SRGAN, Generator, Discriminator
-from .blocks import RRDB, ResidualDenseBlock, ChannelAttention
+"""
+SRDownscalling - Super Resolution Models for WRF Data
+"""
 
-__all__ = ["SRGAN", "Generator", "Discriminator", "RRDB", "ResidualDenseBlock", "ChannelAttention"]
+from .esrgan import ESRGAN
+from .swinir import SwinIR
+from .unet_sr import UNetSR
+
+__all__ = ['ESRGAN', 'SwinIR', 'UNetSR']

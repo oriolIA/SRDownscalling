@@ -112,7 +112,7 @@ class WRFSuperResDataset(Dataset):
 
 if __name__ == "__main__":
     # Test
-    lr_dir = Path("/home/oriol/data/WRF/1469893/d02")
+    lr_dir = Path("/home/oriol/data/WRF/1469893/d02")  # Usar d02 com LR
     hr_dir = Path("/home/oriol/data/WRF/1469893/d05")
 
     lr_files = sorted(lr_dir.glob("*.nc"))[:5]

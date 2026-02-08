@@ -1,75 +1,69 @@
-# SRDownscalling
+# SRDownscalling - Super Resolution per a Dades WRF
 
-**Super-Resolution for WRF Wind Fields using Enhanced Deep Learning**
+**Repo:** https://github.com/oriol/SRDownscalling
 
-A novel approach combining:
-- **ESRGAN-inspired architecture** with residual-in-residual dense blocks
-- **Attention mechanisms** (SE + CBAM) for focus on wind features
-- **Multi-scale feature fusion** with feature pyramid
-- **Perceptual + adversarial + pixel losses** for realistic outputs
+## Objectiu
 
-## Overview
+Sistema de downscalling amb IA per a dades meteorològiques WRF (Weather Research and Forecasting).
 
-This project implements a state-of-the-art super-resolution model designed specifically for meteorological downscaling. Unlike traditional UNet approaches, SRDownscalling uses:
+## Dataset
 
-1. **RRDB (Residual-in-Residual Dense Block)** - deeper feature extraction
-2. **Spectral Normalization GAN** - stable adversarial training
-3. **Feature Pyramid Fusion** - multi-scale context
-4. **Channel Attention** - adaptive feature recalibration
+**Font:** `/home/oriol/data/WRF/1469893`
 
-## Quick Start
+| Domini | Resolució | Dimensions | Temporal |
+|--------|-----------|------------|----------|
+| d02 (pare) | ~3km (0.027°) | 100×100 | 24h |
+| d05 (fill) | ~100m (0.001°) | 125×119 | 24h |
 
-### Installation
+**Factor de millora:** ~30× espacial
+
+## Instal·lació
 
 ```bash
-# Clone and install
-git clone https://github.com/oriolIA/SRDownscalling.git
+git clone https://github.com/oriol/SRDownscalling.git
 cd SRDownscalling
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
-### Training
+## Ús
 
 ```bash
-python -m src.main --mode train \
-    --input /path/to/low_res_data/ \
-    --target /path/to/high_res_data/ \
-    --scale 2 \
-    --epochs 100 \
-    --batch_size 16
+# Prova ràpida amb dades reduïdes
+bash scripts/quick_test.sh
+
+# Entrenament complet
+python src/train.py --config configs/sr_resunet.yaml
+
+# Inferència
+python src/predict.py --model outputs/best_model.pth --input data/test/
 ```
 
-### Inference
-
-```bash
-python -m src.main --mode predict \
-    --model outputs/latest/model.pth \
-    --input /path/to/test_low_res.nc \
-    --output /path/to/sr_output.nc
-```
-
-## Architecture Highlights
+## Estructura
 
 ```
-Input (HxW) → Conv → RRDB×4 → Attention → FPN → Upsample×2 → Output (2Hx2W)
-                    ↓
-              Discriminator (SNGAN)
+SRDownscalling/
+├── src/
+│   ├── models/       # Arquitectes SR (ESRGAN, SwinIR, UNet)
+│   ├── data/         # Dataset WRF
+│   ├── training/      # Pipeline d'entrenament
+│   └── utils/        # Utilitats
+├── configs/          # Configuracions YAML
+├── scripts/          # Scripts de prova
+└── data/             # Dades (enllaç simbòlic)
 ```
 
-## Requirements
+## Model
 
-- Python 3.10+
-- PyTorch 2.0+
-- CUDA recommended
+Arquitectura inicial: **ESRGAN** (Enhanced Super-Resolution GAN) adaptada per a dades meteorològiques.
 
-See `requirements.txt` for full dependencies.
+## Resultats Esperats
 
-## License
+| Mètrica | Valor estimat (inicial) | Objectiu |
+|---------|------------------------|----------|
+| PSNR | 25-28 dB | >32 dB |
+| SSIM | 0.70-0.75 | >0.85 |
+| MAE | 1.5-2.0 m/s | <1.0 m/s |
 
-MIT
+## Autor
+
+Oriol
