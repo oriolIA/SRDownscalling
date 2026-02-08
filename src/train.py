@@ -87,7 +87,7 @@ def validate(model, loader, criterion, device):
 
 def main():
     parser = argparse.ArgumentParser(description="SRDownscalling Training")
-    parser.add_argument("--lr_dir", type=str, default="/home/oriol/data/WRF/1469893/d01")
+    parser.add_argument("--lr_dir", type=str, default="/home/oriol/data/WRF/1469893/d02")
     parser.add_argument("--hr_dir", type=str, default="/home/oriol/data/WRF/1469893/d05")
     parser.add_argument("--model", type=str, default="unet_sr", choices=["esrgan", "unet_sr"])
     parser.add_argument("--epochs", type=int, default=10)
