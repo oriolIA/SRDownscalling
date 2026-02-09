@@ -1,68 +1,47 @@
-# SRDownscalling - Super Resolution per a Dades WRF
+# SRDownscalling - WRF Wind Field Super-Resolution
 
-**Repo:** https://github.com/oriol/SRDownscalling
+Super-Resolution models per a dades meteorològiques WRF (d02 → d05).
 
 ## Objectiu
 
-Sistema de downscalling amb IA per a dades meteorològiques WRF (Weather Research and Forecasting).
+Aplicar tècniques de Deep Learning (ESRGAN + Attention) per fer downscaling de camps de vent des de ~3km (d02) fins a ~100m (d05).
 
 ## Dataset
 
-**Font:** `/home/oriol/data/WRF/1469893`
+**WRF Case:** 1469893
 
-| Domini | Resolució | Dimensions | Temporal |
-|--------|-----------|------------|----------|
-| d02 (pare) | ~3km (0.027°) | 100×100 | 24h |
-| d05 (fill) | ~100m (0.001°) | 125×119 | 24h |
+| Domini | Resolució | Dimensions | Variables |
+|--------|-----------|------------|-----------|
+| d02 (LR) | ~3km | 48×9×56×57 | TKE, U, V, W, P, T, HGT |
+| d05 (HR) | ~100m | 48×9×125×119 | TKE, U, V, W, P, T, HGT |
 
-**Factor de millora:** ~30× espacial
+## Models
 
-## Instal·lació
+### UNetSR (Principal)
+- Basat en U-Net amb residual connections
+- Attention gates per capturar patrons de vent
+- ~2.5M paràmetres
 
-```bash
-git clone https://github.com/oriol/SRDownscalling.git
-cd SRDownscalling
-pip install -r requirements.txt
-```
+### ESRGAN (Experimental)
+- Super-Resolution amb GAN
+- Residual-in-Residual Dense Blocks
+- ~680K paràmetres
 
 ## Ús
 
 ```bash
-# Prova ràpida amb dades reduïdes
-bash scripts/quick_test.sh
-
-# Entrenament complet
-python src/train.py --config configs/sr_resunet.yaml
+# Entrenar
+python src/train.py --model unetsr --epochs 100 --batch 4
 
 # Inferència
-python src/predict.py --model outputs/best_model.pth --input data/test/
+python src/inference.py --model checkpoints/unetsr_final.pth --input d02_sample.nc
 ```
 
-## Estructura
+## Requisits
 
-```
-SRDownscalling/
-├── src/
-│   ├── models/       # Arquitectes SR (ESRGAN, SwinIR, UNet)
-│   ├── data/         # Dataset WRF
-│   ├── training/      # Pipeline d'entrenament
-│   └── utils/        # Utilitats
-├── configs/          # Configuracions YAML
-├── scripts/          # Scripts de prova
-└── data/             # Dades (enllaç simbòlic)
-```
-
-## Model
-
-Arquitectura inicial: **ESRGAN** (Enhanced Super-Resolution GAN) adaptada per a dades meteorològiques.
-
-## Resultats Esperats
-
-| Mètrica | Valor estimat (inicial) | Objectiu |
-|---------|------------------------|----------|
-| PSNR | 25-28 dB | >32 dB |
-| SSIM | 0.70-0.75 | >0.85 |
-| MAE | 1.5-2.0 m/s | <1.0 m/s |
+- Python 3.11+
+- PyTorch 2.0+
+- xarray, netCDF4, numpy, scipy
 
 ## Autor
 
