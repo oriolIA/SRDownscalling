@@ -1,0 +1,6 @@
+*.pth
+*.pyc
+outputs/
+checkpoints/
+models/
+__pycache__/
